@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 
+# Seed for reproducibility
+# np.random.seed(0)
+
 """
 2. Eksik Veri Analizi ve Temizleme
 """
@@ -25,10 +28,11 @@ df = pd.DataFrame({
 print("Orijinal DataFrame:")
 print(df)
 
-#'Bilet Fiyatı' sütununa NaN'ın eklenmesi
-size = np.random.randint(3, len(df))
-nan_indices = np.random.choice(df.index, size=size, replace=False)  #Rastgele indeks (Eksik değerler için)
+# 'Bilet Fiyatı' ve 'Uçuş Numarası' sütunlarına NaN'ın eklenmesi
+size = np.random.randint(4, 7)
+nan_indices = np.random.choice(df.index, size=size, replace=False)  # Rastgele indeks (Eksik değerler için)
 df.loc[nan_indices, 'Bilet Fiyatı'] = np.nan
+df.loc[nan_indices, 'Uçuş Numarası'] = np.nan
 print("\nDataframe (Eksik Değerler ile):")
 print(df)
 
@@ -41,18 +45,29 @@ print(missing_data_count)
 print("\nEksik Değerlerin oranı:")
 print(missing_data_percentage)
 
-# Eksik değerleri ortalama ile doldurulması
-average_bilet_fiyati = df['Bilet Fiyatı'].mean()
-print("\nBilet Fiyatı sütununun Ortalama Değeri:", average_bilet_fiyati)
-
 df_copy= df.copy()
 
-df['Bilet Fiyatı'] = df['Bilet Fiyatı'].fillna(average_bilet_fiyati) 
+# Eksik değerleri doldurma
+average_bilet_fiyati = df['Bilet Fiyatı'].mean()
 
-print("\nEksik Değerler Ortalamalarla Doldurulmuş DataFrame:")
+random_flight_data = [
+    "AF296Q", "VF3000", "TK207", "PC3000", "QR500",
+    "EK202", "BA215", "LH430", "DL120", "AA100"
+]
+nan_flight_indices = df['Uçuş Numarası'].isna()
+nan_random_fligthts= np.random.choice(random_flight_data, size=nan_flight_indices.sum())
+
+# Eksik 'Bilet Fiyatı' ve 'Uçuş Numarası' doldurulması
+df['Bilet Fiyatı'] = df['Bilet Fiyatı'].fillna(average_bilet_fiyati) 
+df.loc[nan_flight_indices, 'Uçuş Numarası'] = nan_random_fligthts
+
+print("\n'Bilet Fiyatı' sütununun Ortalama Değeri:", average_bilet_fiyati)
+print("\n'Uçuş Numarası' sütununun  Değeri:", nan_random_fligthts)
+
+print("\nEksik Değerler Ortalamalarla ve uçuş numaraları ile Doldurulmuş DataFrame:")
 print(df)
 
-#Eksik değerleri içeren satırları silerek yeni bir DataFrame oluşturulması
+# Eksik değerleri içeren satırları silerek yeni bir DataFrame oluşturulması
 df_dropped = df_copy.dropna()  
 print("\nEksik Değerler İçeren Satırların Silindiği DataFrame:")
 print(df_dropped)

@@ -42,7 +42,7 @@ print("\nYaşa göre sıralanmış öğrenciler (büyükten küçüğe):")
 print(sorted_by_age)
 
 # En yüksek notu alan öğrenci
-highest_grade=df['Not'].idxmax()
+highest_grade = df['Not'].idxmax()
 highest_grade_student = df.loc[highest_grade]
 print("\nEn yüksek notu alan öğrenci:")
 print(highest_grade_student)

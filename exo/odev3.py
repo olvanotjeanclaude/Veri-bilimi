@@ -1,5 +1,9 @@
 import pandas as pd
 
+"""
+3. CSV Dosyası Okuma ve Analiz Etme
+"""
+
 df = pd.read_csv('customers.csv')
 
 #Toplam satır ve sütun sayısını öğrenme
